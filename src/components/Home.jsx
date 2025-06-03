@@ -17,7 +17,10 @@ export const Home = () => {
     visible: { opacity: 1, y: 0 },
   };
   const text =
-    " I'm a Frontend developer, currently looking out for a new role.   I specialize in creating interactive, user-friendly web applications.".split(
+    `Hi, I’m Stuti Kumari, a Frontend Developer who loves transforming
+     ideas into intuitive and engaging web experiences.
+    
+         `.split(
       ""
     );
 
@@ -59,8 +62,8 @@ export const Home = () => {
           </div>
         </div>
       </div>
-      <SideNavbar />
-      {/* <About /> */}
+      {/* <SideNavbar /> */}
+      <About />
       {/* <Project /> */}
     </div>
   );

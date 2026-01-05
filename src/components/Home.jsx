@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Project } from "./Projects";
 import { About } from "./About";
 import { SideNavbar } from "./SideNavbar";
+import { GetInTouch } from "./GetInTouch";
+import { Skills } from "./Skills";
 
 export const Home = () => {
   const textVariants = {
@@ -20,14 +22,12 @@ export const Home = () => {
     `Hi, I’m Stuti Kumari, a Frontend Developer who loves transforming
      ideas into intuitive and engaging web experiences.
     
-         `.split(
-      ""
-    );
+         `.split("");
 
   return (
-    <div>
-      <div className=" ">
-        <div className="    grid grid-cols-1 md:grid-cols-3 gap-6 items-center mt-40 ">
+    <div className="mt-40 mb-10 ">
+      <div>
+        <div className="    grid grid-cols-1 md:grid-cols-3 gap-6 items-center ">
           <div className="md:col-span-2 text-center md:text-left">
             <p className="text-4xl sm:text-5xl font-bold font-[Montserrat] text-gray-100 drop-shadow-lg">
               Hey, I am Stuti
@@ -52,7 +52,7 @@ export const Home = () => {
 
           <div className="relative flex justify-center  inset-shadow-sm inset-shadow-indigo-500/50">
             <img
-              src="https://res.cloudinary.com/dvbw8xujd/image/upload/v1743755142/iri2n8xuoviqsqy4mheh.png"
+              src="https://res.cloudinary.com/dvbw8xujd/image/upload/v1752225324/drgxmgwd2hwdhdpddpgc.jpg"
               className="h-[230px] w-[200px]  shadow-lg rounded-[30%_30%_50%_60%] overflow-hidden
    object-cover
    transition-transform duration-300 hover:scale-105"
@@ -63,8 +63,11 @@ export const Home = () => {
         </div>
       </div>
       {/* <SideNavbar /> */}
+     
       <About />
+      <Skills />
       {/* <Project /> */}
+      <GetInTouch />
     </div>
   );
 };

@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 // import { Navbar } from "./components/Home";
 import { Homepage } from "./pages/Homepage";
-import {  NavProvider } from "./Context/navContext";
+import { NavProvider } from "./Context/navContext";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   // const [displayedText, setDisplayedText] = useState("");
@@ -19,11 +20,10 @@ function App() {
   // }, [text]);
 
   return (
-   <NavProvider>
-    <div>
-
-      <Homepage />
-    </div>
+    <NavProvider>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+      </Routes>
     </NavProvider>
   );
 }

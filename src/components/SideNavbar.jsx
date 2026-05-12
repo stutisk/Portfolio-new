@@ -1,41 +1,73 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTab } from "../Context/navContext";
 import { About } from "./About";
 import { Project } from "./Projects";
-import { useScroll } from "motion/react"
+import { Skills } from "./Skills";
+import { Blog } from "./Blog";
+import { LetsConnect } from "./LetsConnect";
+
+const tabContent = {
+  "About Me": <About />,
+  "Projects": <Project />,
+  "Skills": <Skills />,
+  "Blog": <Blog />,
+  "Contact": <LetsConnect />,
+};
+
 export const SideNavbar = () => {
   const { activeTab, setActiveTab } = useTab();
-  
 
+  const tabs = [
+    { id: "About Me", label: "About Me", icon: "👤" },
+    { id: "Projects", label: "Projects", icon: "🚀" },
+    { id: "Skills", label: "Skills", icon: "⚡" },
+    { id: "Blog", label: "Blog", icon: "📝" },
+    { id: "Contact", label: "Contact", icon: "📬" },
+  ];
 
-  const tabs = ["About Me", "Projects", "Contact"];
   return (
-    <div className="">
-      <div className=" flex text-xl font-bold  text-neutral-300 mt-20 justify-between   ">
-        {tabs.map((singleTab) => (
-          <motion.div
-          whileHover={{
-            scale: 1.1,
-            transition: { type: "spring", stiffness: 100, damping: 5 },
-          }}
-            // className="leading-8 transition-colors duration-300 hover:text-neutral-100 cursor-pointe
-            className={`relative text-2xl font-bold cursor-pointer transition-all duration-300 
-              ${activeTab === singleTab ? "text-white underline underline-offset-8 decoration-pink-500" : "text-neutral-400"}
-            `}
-            onClick={() => setActiveTab(singleTab)}
+    <div className="mt-16">
+      {/* Tab Navigation - Pill Style */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.8 }}
+        className="flex flex-wrap justify-center gap-2 mb-12"
+      >
+        {tabs.map((tab, index) => (
+          <motion.button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9 + index * 0.05 }}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+              activeTab === tab.id
+                ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-lg shadow-pink-500/25"
+                : "bg-neutral-900/80 border border-gray-800 text-gray-400 hover:text-white hover:border-gray-700"
+            }`}
           >
-            {/* <span className="absolute left-0 -bottom-1 w-16 h-1 bg-gradient-to-r from-cyan-500 to-pink-500 rounded-full"></span> */}
-            {singleTab}
-          </motion.div>
+            <span className="text-base">{tab.icon}</span>
+            <span>{tab.label}</span>
+          </motion.button>
         ))}
-      </div>
-      <div className="mt-10 w-full">
-        {activeTab === "About Me" && <About />}
-        {activeTab === "Projects" && <Project/>}
-        
-       
-      </div>
+      </motion.div>
+
+      {/* Content with smooth transitions */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full"
+        >
+          {tabContent[activeTab]}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };

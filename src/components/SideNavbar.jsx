@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useTab } from "../Context/navContext";
+import { useTab } from "../Context/NavContext";
 import { About } from "./About";
 import { Project } from "./Projects";
 import { Skills } from "./Skills";

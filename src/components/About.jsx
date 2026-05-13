@@ -11,7 +11,6 @@ export const About = () => {
       isCurrent: true,
       description:
         "Building accessible components for education platforms. Implemented OAuth authentication and integrated APIs for seamless user login. Revamped dashboard pages to improve UI/UX. Developed a mock interview module for booking and managing sessions. Created Admin and user dashboards to help new members onboard quickly.",
-      skills: ["React", "TypeScript", "OAuth", "UI/UX"],
     },
     {
       id: "tap",
@@ -20,7 +19,6 @@ export const About = () => {
       date: "Apr 2024 - Nov 2024",
       description:
         "Built a self-service partner onboarding system, eliminating manual processes. Developed a frontend-driven multi-deal pool management system, removing backend dependencies and boosting operational efficiency by 35%. Built a secure blank cheque management system, cutting fraud risk by 30% and safeguarding over 500,000 in transactions. Launched a dynamic Leaderboard for referral challenges, increasing user engagement by 50%.",
-      skills: ["React", "TypeScript", "Dashboard", "OAuth"],
     },
     {
       id: "gamerji",
@@ -29,12 +27,14 @@ export const About = () => {
       date: "Nov 2022 - Feb 2024",
       description:
         "Developed ad features for Vodafone mobile app using React-based components, contributing to 15% increase in engagement and ad revenue. Integrated 50+ backend APIs. Delivered core features including Scrim Tournaments and User Profiles, boosting user retention. Managed projects using Jira, communication via Slack, and version control with Bitbucket.",
-      skills: ["React", "JavaScript", "Jira", "Bitbucket"],
     },
   ];
 
   const viewResume = () => {
-    window.open("https://drive.google.com/file/d/1wDZPPW30t0rD6ugPHflcwGVUr4I5_g2A/view?usp=sharing", "_blank");
+    window.open(
+      "https://drive.google.com/file/d/1wDZPPW30t0rD6ugPHflcwGVUr4I5_g2A/view?usp=sharing",
+      "_blank"
+    );
   };
 
   return (
@@ -86,7 +86,11 @@ export const About = () => {
               </div>
 
               {/* Content Card */}
-              <div className={`ml-10 md:ml-0 md:w-1/2 ${index % 2 === 0 ? "md:pr-12" : "md:pl-12"}`}>
+              <div
+                className={`ml-10 md:ml-0 md:w-1/2 ${
+                  index % 2 === 0 ? "md:pr-12" : "md:pl-12"
+                }`}
+              >
                 <motion.div
                   whileHover={{ y: -4, scale: 1.01 }}
                   className="bg-neutral-900/80 border border-gray-800 rounded-2xl p-6 hover:border-pink-500/30 transition-all duration-300"
@@ -112,7 +116,9 @@ export const About = () => {
                       <h3 className="text-lg font-bold text-white">
                         {exp.position}
                       </h3>
-                      <p className="text-pink-400 text-sm font-medium">{exp.company}</p>
+                      <p className="text-pink-400 text-sm font-medium">
+                        {exp.company}
+                      </p>
                     </div>
                   </div>
 
@@ -122,16 +128,6 @@ export const About = () => {
                   </p>
 
                   {/* Skills */}
-                  <div className="flex flex-wrap gap-2">
-                    {exp.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="text-xs px-3 py-1 rounded-full bg-neutral-800 text-gray-300 border border-gray-700"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
                 </motion.div>
               </div>
             </motion.div>

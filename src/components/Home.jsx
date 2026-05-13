@@ -5,7 +5,7 @@ import { socialLinks } from "../constants/navitems";
 import { FaPlay } from "react-icons/fa";
 
 export const Home = () => {
-  const roles = ["Frontend Developer", "React Specialist", "UI Enthusiast"];
+  const roles = ["Frontend Developer","Exploring Backend", "UI Enthusiast"];
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayedRole, setDisplayedRole] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);

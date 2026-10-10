@@ -1,9 +1,19 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaPlay, FaExternalLinkAlt } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
 const projects = [
+  {
+    title: "Outzy",
+    description:
+      "Outzy helps people find others to join real-world activities like hikes, cafes and gym classes. Browse plans near you, request to join with a short message, and chat once the host accepts.",
+    tags: ["Next.js", "React", "TypeScript", "Supabase", "Leaflet", "Tailwind"],
+    liveLink: "https://outzyy.vercel.app/",
+    github: "https://github.com/stutisk/outzy",
+    caseStudy: "/projects/outzy",
+  },
   {
     title: "Chrome Extension",
     description:
@@ -223,6 +233,16 @@ export const Project = () => {
                     <FaExternalLinkAlt className="w-4 h-4" />
                     <span>Live</span>
                   </motion.a>
+                )}
+                {project.caseStudy && (
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Link
+                      to={project.caseStudy}
+                      className="flex items-center gap-2 text-sm text-gray-400 hover:text-pink-400 transition-colors px-3 py-2 rounded-lg hover:bg-neutral-800"
+                    >
+                      <span>Case study</span>
+                    </Link>
+                  </motion.div>
                 )}
                 {project.hasVideo && (
                   <motion.button

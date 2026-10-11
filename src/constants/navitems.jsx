@@ -12,7 +12,7 @@ export const socialLinks = [
       label: "X",
     },
     {
-      href: "https://www.linkedin.com/in/stuti-kumari-8b03a9193/",
+      href: "https://www.linkedin.com/in/stuti-sk-8b03a9193/?isSelfProfile=true",
       icon: <FaLinkedin className="w-7 h-7" />,
       label: "LinkedIn",
     },

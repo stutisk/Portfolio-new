@@ -32,7 +32,7 @@ export const About = () => {
 
   const viewResume = () => {
     window.open(
-      "https://drive.google.com/file/d/1YiKPpQRrWhqZ19kwA0dGR2W7xXmige71/view?usp=sharing",
+      "https://drive.google.com/file/d/1MRnNGEGqSjSTXZoahp9uTYakXqtISPlq/view",
       "_blank"
     );
   };

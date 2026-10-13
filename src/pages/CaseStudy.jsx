@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useReducedMotion,
-} from "framer-motion";
+import { motion, useScroll, useSpring, useReducedMotion } from "framer-motion";
 import { FaArrowLeft, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
 /* ------------------------------------------------------------------ */
@@ -27,48 +22,77 @@ const studies = {
     videoPoster: "",
 
     meta: [
-      { label: "Role", value: "Solo build: product flow, UI, database and security" },
-      { label: "Focus", value: "Realtime chat and access control with Row Level Security" },
-      { label: "Status", value: "Live on Vercel, sign in with Google to try it" },
+      {
+        label: "Role",
+        value: "Solo build: product flow, UI, database and security",
+      },
+      {
+        label: "Focus",
+        value: "Realtime chat and access control with Row Level Security",
+      },
+      {
+        label: "Status",
+        value: "Live on Vercel, sign in with Google to try it",
+      },
     ],
 
     // TODO: replace/add real numbers (Lighthouse score, weeks to build, plans hosted).
     stats: [
-      { value: "0", label: "custom servers", note: "Auth, data and realtime all run on Supabase" },
-      { value: "4", label: "RLS policy groups", note: "Profiles, requests, activities, chats" },
-      { value: "1:1", label: "realtime chat", note: "Opens only after the host accepts" },
+      {
+        value: "0",
+        label: "custom servers",
+        note: "Auth, data and realtime all run on Supabase",
+      },
+      {
+        value: "4",
+        label: "RLS policy groups",
+        note: "Profiles, requests, activities, chats",
+      },
+      {
+        value: "1:1",
+        label: "realtime chat",
+        note: "Opens only after the host accepts",
+      },
     ],
 
-    // Put images in /public/case-studies/outzy/. Missing files show a placeholder.
+    // Files in /public are served from the site root, so "/feed.png" maps to
+    // public/feed.png. If you move them into public/case-studies/outzy/,
+    // update each src below (e.g. "/case-studies/outzy/feed.png").
+    // Missing files show a placeholder.
     screenshots: [
       {
-        src: "/case-studies/outzy/feed.png",
-        alt: "Outzy feed showing nearby plans on a list and map",
-        caption: "Feed: plans sorted nearest first, with category filters and a map view.",
+        src: "/feed.png",
+        alt: "Outzy feed showing nearby plans",
+        caption: "Explore activities near you.",
+        role: "Everyone",
         ratio: "aspect-[16/10]",
       },
       {
-        src: "/case-studies/outzy/plan.png",
-        alt: "Plan detail with request to join button",
-        caption: "Plan detail and request to join.",
+        src: "/create.png",
+        alt: "Host creating an activity plan",
+        caption: "Create and publish an activity plan.",
+        role: "Host",
         ratio: "aspect-[16/10]",
       },
       {
-        src: "/case-studies/outzy/requests.png",
-        alt: "Host reading a guest's request note",
-        caption: "Host reads the note, then accepts or rejects.",
+        src: "/plan.png",
+        alt: "User viewing a plan and requesting to join",
+        caption: "View a plan and send a request to join.",
+        role: "User / Guest",
         ratio: "aspect-[16/10]",
       },
       {
-        src: "/case-studies/outzy/chat.png",
-        alt: "Realtime chat between host and guest",
-        caption: "Private realtime chat after a yes.",
+        src: "/requests.png",
+        alt: "Host reviewing requests to join an activity",
+        caption: "Review requests and accept or reject guests.",
+        role: "Host",
         ratio: "aspect-[16/10]",
       },
       {
-        src: "/case-studies/outzy/create.png",
-        alt: "Create plan form with category, time and landmark",
-        caption: "Create a plan with a landmark instead of an exact address.",
+        src: "/chat.png",
+        alt: "Host and guest chatting in real time",
+        caption: "Chat privately after a request is accepted.",
+        role: "Host + Guest",
         ratio: "aspect-[16/10]",
       },
     ],
@@ -275,6 +299,7 @@ const studies = {
 
 const sections = [
   { id: "overview", label: "Overview" },
+  { id: "why", label: "Why" },
   { id: "problem", label: "Problem" },
   { id: "process", label: "Process" },
   { id: "product", label: "Product" },
@@ -303,39 +328,74 @@ const Section = ({ id, title, intro, children }) => {
       <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
         {title}
       </h2>
-      {intro && <p className="text-gray-400 mt-2 max-w-2xl leading-7">{intro}</p>}
+      {intro && (
+        <p className="text-gray-400 mt-2 max-w-2xl leading-7">{intro}</p>
+      )}
       <div className="mt-8">{children}</div>
     </motion.section>
   );
 };
 
-const ImageFrame = ({ src, alt, caption, ratio = "aspect-[16/10]" }) => {
+const ImageFrame = ({
+  src,
+  alt,
+  caption,
+  ratio = "aspect-[16/10]",
+  role,
+  onClick,
+}) => {
   const [failed, setFailed] = useState(false);
+
   return (
     <figure>
-      <div
-        className={`${ratio} w-full overflow-hidden rounded-2xl border border-gray-800 bg-neutral-900`}
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={`View full screenshot: ${alt}`}
+        className="group block w-full text-left"
       >
-        {failed ? (
-          <div className="h-full w-full flex flex-col items-center justify-center gap-1 text-center px-4 bg-gradient-to-br from-neutral-900 to-neutral-800">
-            <span className="text-xs font-medium text-pink-400">Screenshot coming</span>
-            <span className="text-[11px] text-gray-500 break-all">{src}</span>
-          </div>
-        ) : (
-          <img
-            src={src}
-            alt={alt}
-            loading="lazy"
-            onError={() => setFailed(true)}
-            className="h-full w-full object-cover object-top"
-          />
+        <div
+          className={`${ratio} relative w-full overflow-hidden rounded-2xl border border-gray-800 bg-neutral-900`}
+        >
+          {failed ? (
+            <div className="h-full w-full flex flex-col items-center justify-center gap-1 px-4">
+              <span className="text-xs text-pink-400">
+                Screenshot unavailable
+              </span>
+              <span className="text-[11px] text-gray-500 break-all">
+                {src}
+              </span>
+            </div>
+          ) : (
+            <img
+              src={src}
+              alt={alt}
+              loading="lazy"
+              onError={() => setFailed(true)}
+              className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+            />
+          )}
+
+          {!failed && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30">
+              <span className="rounded-full bg-black/70 px-4 py-2 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
+                View full screenshot ↗
+              </span>
+            </div>
+          )}
+        </div>
+      </button>
+
+      <figcaption className="mt-3 space-y-1">
+        {role && (
+          <span className="inline-block rounded-full border border-gray-700 px-2.5 py-1 text-xs text-pink-400">
+            {role}
+          </span>
         )}
-      </div>
-      {caption && (
-        <figcaption className="text-sm text-gray-400 mt-2 leading-6">
-          {caption}
-        </figcaption>
-      )}
+        {caption && (
+          <p className="text-sm text-gray-400 leading-6">{caption}</p>
+        )}
+      </figcaption>
     </figure>
   );
 };
@@ -376,16 +436,29 @@ const Architecture = () => (
         <p className="text-xs font-medium text-pink-400 mb-3">Supabase</p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <Node small title="Auth" sub="Google sign-in" />
-          <Node small title="Postgres + RLS" sub="Policies on every sensitive table" />
+          <Node
+            small
+            title="Postgres + RLS"
+            sub="Policies on every sensitive table"
+          />
           <Node small title="Realtime" sub="Messages and unread badges" />
-          <Node small title="DB function" sub="Creates the chat when a request is accepted" />
+          <Node
+            small
+            title="DB function"
+            sub="Creates the chat when a request is accepted"
+          />
         </div>
       </div>
       <Arrow label="Landmark text goes through a server route" />
-      <Node small title="Nominatim" sub="Turns a landmark into coordinates (free tier, rate limited)" />
+      <Node
+        small
+        title="Nominatim"
+        sub="Turns a landmark into coordinates (free tier, rate limited)"
+      />
     </div>
     <figcaption className="text-sm text-gray-400 mt-2">
-      Architecture: the browser talks to Supabase directly, so security lives in the database.
+      Architecture: the browser talks to Supabase directly, so security lives in
+      the database.
     </figcaption>
   </figure>
 );
@@ -397,6 +470,9 @@ const Architecture = () => (
 export const CaseStudy = () => {
   const { slug } = useParams();
   const study = studies[slug];
+
+  // Hooks must live inside the component and run before any early return.
+  const [activeScreenshot, setActiveScreenshot] = useState(null);
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -415,6 +491,21 @@ export const CaseStudy = () => {
     };
   }, [study]);
 
+  // Close the screenshot viewer with Escape and lock page scroll while open.
+  useEffect(() => {
+    if (!activeScreenshot) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setActiveScreenshot(null);
+    };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [activeScreenshot]);
+
   if (!study) {
     return (
       <div className="min-h-screen bg-[#0f0f0f] text-gray-300 px-6 py-16">
@@ -427,7 +518,9 @@ export const CaseStudy = () => {
             <FaArrowLeft className="w-3 h-3" />
             Projects
           </Link>
-          <h1 className="text-3xl font-bold text-white mt-8">Case study not found</h1>
+          <h1 className="text-3xl font-bold text-white mt-8">
+            Case study not found
+          </h1>
         </div>
       </div>
     );
@@ -489,7 +582,9 @@ export const CaseStudy = () => {
             <p className="text-xl md:text-2xl text-gray-200 mt-4 max-w-2xl leading-snug">
               {study.tagline}
             </p>
-            <p className="text-gray-300 mt-4 max-w-2xl leading-7">{study.summary}</p>
+            <p className="text-gray-300 mt-4 max-w-2xl leading-7">
+              {study.summary}
+            </p>
 
             <div className="flex flex-wrap gap-2 mt-6">
               {study.tags.map((tag) => (
@@ -525,7 +620,10 @@ export const CaseStudy = () => {
 
             {/* Hero screenshot */}
             <div className="mt-10">
-              <ImageFrame {...heroShot} />
+              <ImageFrame
+                {...heroShot}
+                onClick={() => setActiveScreenshot(heroShot)}
+              />
             </div>
 
             {/* Stats */}
@@ -533,8 +631,12 @@ export const CaseStudy = () => {
               {study.stats.map((s) => (
                 <div key={s.label} className="bg-neutral-900 p-5">
                   <dd className="text-3xl font-bold text-white">{s.value}</dd>
-                  <dt className="text-sm font-medium text-pink-400 mt-1">{s.label}</dt>
-                  <p className="text-sm text-gray-400 mt-1 leading-6">{s.note}</p>
+                  <dt className="text-sm font-medium text-pink-400 mt-1">
+                    {s.label}
+                  </dt>
+                  <p className="text-sm text-gray-400 mt-1 leading-6">
+                    {s.note}
+                  </p>
                 </div>
               ))}
             </dl>
@@ -546,7 +648,9 @@ export const CaseStudy = () => {
                   <dt className="text-xs font-semibold uppercase tracking-wider text-pink-400">
                     {item.label}
                   </dt>
-                  <dd className="text-gray-200 text-sm leading-6 mt-1">{item.value}</dd>
+                  <dd className="text-gray-200 text-sm leading-6 mt-1">
+                    {item.value}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -567,17 +671,29 @@ export const CaseStudy = () => {
           >
             <div className="grid sm:grid-cols-3 gap-8">
               {study.problem.map((item) => (
-                <div key={item.title} className="border-t-2 border-pink-500/60 pt-4">
-                  <h3 className="text-white font-semibold text-lg">{item.title}</h3>
-                  <p className="text-gray-300 text-[15px] leading-7 mt-2">{item.text}</p>
+                <div
+                  key={item.title}
+                  className="border-t-2 border-pink-500/60 pt-4"
+                >
+                  <h3 className="text-white font-semibold text-lg">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-300 text-[15px] leading-7 mt-2">
+                    {item.text}
+                  </p>
                 </div>
               ))}
             </div>
 
-            <h3 className="text-lg font-semibold text-white mt-12 mb-4">Goals</h3>
+            <h3 className="text-lg font-semibold text-white mt-12 mb-4">
+              Goals
+            </h3>
             <ul className="space-y-3 max-w-3xl">
               {study.goals.map((goal) => (
-                <li key={goal} className="flex gap-3 text-gray-200 text-[15px] leading-7">
+                <li
+                  key={goal}
+                  className="flex gap-3 text-gray-200 text-[15px] leading-7"
+                >
                   <span className="mt-3 w-1.5 h-1.5 rounded-full bg-pink-400 shrink-0" />
                   <span>{goal}</span>
                 </li>
@@ -600,8 +716,12 @@ export const CaseStudy = () => {
                   <span className="text-xs font-medium text-pink-400">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="text-white font-semibold mt-2">{step.title}</h3>
-                  <p className="text-gray-300 text-[15px] leading-7 mt-2">{step.text}</p>
+                  <h3 className="text-white font-semibold mt-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-300 text-[15px] leading-7 mt-2">
+                    {step.text}
+                  </p>
                 </li>
               ))}
             </ol>
@@ -622,7 +742,9 @@ export const CaseStudy = () => {
                   <span className="absolute -left-3 top-0 w-6 h-6 rounded-full bg-[#0f0f0f] border border-pink-500/60 text-[11px] font-medium text-pink-400 flex items-center justify-center">
                     {index + 1}
                   </span>
-                  <h3 className="text-white font-semibold text-lg leading-6">{step.title}</h3>
+                  <h3 className="text-white font-semibold text-lg leading-6">
+                    {step.title}
+                  </h3>
                   <p className="text-gray-300 text-[15px] leading-7 mt-1 max-w-2xl">
                     {step.text}
                   </p>
@@ -632,7 +754,11 @@ export const CaseStudy = () => {
 
             <div className="grid sm:grid-cols-2 gap-4 mt-12">
               {phoneShots.map((shot) => (
-                <ImageFrame key={shot.src} {...shot} />
+                <ImageFrame
+                  key={shot.src}
+                  {...shot}
+                  onClick={() => setActiveScreenshot(shot)}
+                />
               ))}
             </div>
           </Section>
@@ -663,7 +789,9 @@ export const CaseStudy = () => {
                   <span className="w-7 h-7 shrink-0 rounded-full bg-pink-500/10 text-pink-400 text-sm font-medium flex items-center justify-center">
                     {index + 1}
                   </span>
-                  <span className="text-gray-200 text-[15px] leading-7">{step}</span>
+                  <span className="text-gray-200 text-[15px] leading-7">
+                    {step}
+                  </span>
                 </li>
               ))}
             </ol>
@@ -681,22 +809,35 @@ export const CaseStudy = () => {
 
             <div className="overflow-x-auto rounded-2xl border border-gray-800">
               <table className="w-full min-w-[640px] text-left text-[15px]">
-                <caption className="sr-only">Tech stack and why I chose each piece</caption>
+                <caption className="sr-only">
+                  Tech stack and why I chose each piece
+                </caption>
                 <thead className="bg-neutral-900 text-xs uppercase tracking-wider text-gray-400">
                   <tr>
-                    <th scope="col" className="px-5 py-3 font-medium">Layer</th>
-                    <th scope="col" className="px-5 py-3 font-medium">What I used</th>
-                    <th scope="col" className="px-5 py-3 font-medium">Why</th>
+                    <th scope="col" className="px-5 py-3 font-medium">
+                      Layer
+                    </th>
+                    <th scope="col" className="px-5 py-3 font-medium">
+                      What I used
+                    </th>
+                    <th scope="col" className="px-5 py-3 font-medium">
+                      Why
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-800">
                   {study.stack.map((row) => (
                     <tr key={row.layer} className="align-top">
-                      <th scope="row" className="px-5 py-4 text-white font-semibold whitespace-nowrap">
+                      <th
+                        scope="row"
+                        className="px-5 py-4 text-white font-semibold whitespace-nowrap"
+                      >
                         {row.layer}
                       </th>
                       <td className="px-5 py-4 text-gray-100">{row.tool}</td>
-                      <td className="px-5 py-4 text-gray-300 leading-7">{row.why}</td>
+                      <td className="px-5 py-4 text-gray-300 leading-7">
+                        {row.why}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -708,7 +849,10 @@ export const CaseStudy = () => {
             </h3>
             <ul className="space-y-3 max-w-3xl">
               {study.buildNotes.map((note) => (
-                <li key={note} className="flex gap-3 text-gray-200 text-[15px] leading-7">
+                <li
+                  key={note}
+                  className="flex gap-3 text-gray-200 text-[15px] leading-7"
+                >
                   <span className="mt-3 w-1.5 h-1.5 rounded-full bg-pink-400 shrink-0" />
                   <span>{note}</span>
                 </li>
@@ -723,20 +867,31 @@ export const CaseStudy = () => {
             </div>
             <div className="mt-6 divide-y divide-gray-800 border-y border-gray-800">
               {study.policies.map((policy) => (
-                <div key={policy.title} className="grid md:grid-cols-[220px_1fr] gap-2 md:gap-8 py-5">
+                <div
+                  key={policy.title}
+                  className="grid md:grid-cols-[220px_1fr] gap-2 md:gap-8 py-5"
+                >
                   <h3 className="text-white font-semibold">{policy.title}</h3>
-                  <p className="text-gray-300 text-[15px] leading-7">{policy.text}</p>
+                  <p className="text-gray-300 text-[15px] leading-7">
+                    {policy.text}
+                  </p>
                 </div>
               ))}
             </div>
-            <p className="text-gray-400 text-sm leading-6 mt-4">{study.securityNote}</p>
+            <p className="text-gray-400 text-sm leading-6 mt-4">
+              {study.securityNote}
+            </p>
           </Section>
 
           {/* LEARNINGS */}
           <Section id="learnings" title="Tradeoffs and learnings">
             <div className="border-l-2 border-pink-500 pl-6 mb-10 max-w-3xl">
-              <h3 className="text-white font-semibold text-lg">{study.hardest.title}</h3>
-              <p className="text-gray-100 text-[15px] leading-7 mt-2">{study.hardest.text}</p>
+              <h3 className="text-white font-semibold text-lg">
+                {study.hardest.title}
+              </h3>
+              <p className="text-gray-100 text-[15px] leading-7 mt-2">
+                {study.hardest.text}
+              </p>
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               {study.tradeoffs.map((item) => (
@@ -745,7 +900,9 @@ export const CaseStudy = () => {
                   className="bg-neutral-900/80 border border-gray-800 rounded-2xl p-5"
                 >
                   <h3 className="text-white font-semibold">{item.title}</h3>
-                  <p className="text-gray-300 text-[15px] leading-7 mt-2">{item.text}</p>
+                  <p className="text-gray-300 text-[15px] leading-7 mt-2">
+                    {item.text}
+                  </p>
                 </div>
               ))}
             </div>
@@ -755,7 +912,10 @@ export const CaseStudy = () => {
             </h3>
             <ul className="space-y-3 max-w-3xl">
               {study.differently.map((item) => (
-                <li key={item} className="flex gap-3 text-gray-200 text-[15px] leading-7">
+                <li
+                  key={item}
+                  className="flex gap-3 text-gray-200 text-[15px] leading-7"
+                >
                   <span className="mt-3 w-1.5 h-1.5 rounded-full bg-pink-400 shrink-0" />
                   <span>{item}</span>
                 </li>
@@ -767,13 +927,18 @@ export const CaseStudy = () => {
           <Section id="next" title="Known limitations and what's next">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-neutral-900/80 border border-gray-800 rounded-2xl p-6">
-                <h3 className="text-white font-semibold mb-1">Known limitations</h3>
+                <h3 className="text-white font-semibold mb-1">
+                  Known limitations
+                </h3>
                 <p className="text-gray-400 text-sm mb-4">
                   What I know isn't right yet, and how I plan to fix it.
                 </p>
                 <ul className="space-y-3">
                   {study.limitations.map((item) => (
-                    <li key={item} className="flex gap-3 text-gray-200 text-[15px] leading-7">
+                    <li
+                      key={item}
+                      className="flex gap-3 text-gray-200 text-[15px] leading-7"
+                    >
                       <span className="mt-3 w-1.5 h-1.5 rounded-full bg-gray-500 shrink-0" />
                       <span>{item}</span>
                     </li>
@@ -784,7 +949,10 @@ export const CaseStudy = () => {
                 <h3 className="text-white font-semibold mb-4">What's next</h3>
                 <ul className="space-y-3">
                   {study.next.map((item) => (
-                    <li key={item} className="flex gap-3 text-gray-200 text-[15px] leading-7">
+                    <li
+                      key={item}
+                      className="flex gap-3 text-gray-200 text-[15px] leading-7"
+                    >
                       <span className="mt-3 w-1.5 h-1.5 rounded-full bg-pink-400 shrink-0" />
                       <span>{item}</span>
                     </li>
@@ -833,6 +1001,48 @@ export const CaseStudy = () => {
           </div>
         </article>
       </main>
+
+      {/* FULL-SCREEN SCREENSHOT VIEWER */}
+      {activeScreenshot && (
+        <div
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 p-4 md:p-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Full-screen screenshot viewer"
+          onClick={() => setActiveScreenshot(null)}
+        >
+          <div
+            className="flex w-full max-w-6xl items-center justify-between gap-4 pb-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-sm text-gray-300">{activeScreenshot.alt}</p>
+
+            <button
+              type="button"
+              onClick={() => setActiveScreenshot(null)}
+              className="rounded-full border border-gray-700 px-4 py-2 text-sm text-white hover:bg-white/10"
+              aria-label="Close screenshot"
+            >
+              ✕ Close
+            </button>
+          </div>
+
+          <div
+            className="flex min-h-0 w-full max-w-6xl flex-1 items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={activeScreenshot.src}
+              alt={activeScreenshot.alt}
+              className="max-h-full max-w-full rounded-lg object-contain"
+            />
+          </div>
+
+          <p className="pt-4 text-xs text-gray-500">
+            Click outside the image or press Esc to close
+          </p>
+        </div>
+      )}
     </div>
   );
 };

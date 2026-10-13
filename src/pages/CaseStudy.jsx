@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion, useScroll, useSpring, useReducedMotion } from "framer-motion";
-import { FaArrowLeft, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaGithub,
+  FaExternalLinkAlt,
+  FaPlayCircle,
+} from "react-icons/fa";
 
 /* ------------------------------------------------------------------ */
 /* DATA                                                                */
@@ -18,7 +23,7 @@ const studies = {
     github: "https://github.com/stutisk/outzy",
 
     // Optional: path or URL to a 30-60s walkthrough (mp4). Leave "" to hide.
-    video: "",
+    loom: "https://www.loom.com/share/0511529696584ea796a229cecbcce757",
     videoPoster: "",
 
     meta: [
@@ -362,9 +367,7 @@ const ImageFrame = ({
               <span className="text-xs text-pink-400">
                 Screenshot unavailable
               </span>
-              <span className="text-[11px] text-gray-500 break-all">
-                {src}
-              </span>
+              <span className="text-[11px] text-gray-500 break-all">{src}</span>
             </div>
           ) : (
             <img
@@ -616,6 +619,18 @@ export const CaseStudy = () => {
                 <FaGithub className="w-4 h-4" />
                 GitHub
               </a>
+              {/* Loom walkthrough */}
+              {study.loom && (
+                <a
+                  href={study.loom}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-neutral-900/80 border border-gray-700 text-gray-200 hover:text-white hover:border-gray-500 transition-all"
+                >
+                  <FaPlayCircle className="w-4 h-4" />
+                  Watch walkthrough
+                </a>
+              )}
             </div>
 
             {/* Hero screenshot */}
@@ -761,40 +776,6 @@ export const CaseStudy = () => {
                 />
               ))}
             </div>
-          </Section>
-
-          {/* TRY IT */}
-          <Section
-            id="try"
-            title="Try it yourself"
-            intro="You need two accounts to see both sides. A second browser window in incognito works."
-          >
-            {study.video && (
-              <video
-                controls
-                playsInline
-                preload="metadata"
-                poster={study.videoPoster || undefined}
-                className="w-full rounded-2xl border border-gray-800 mb-8"
-              >
-                <source src={study.video} type="video/mp4" />
-              </video>
-            )}
-            <ol className="grid sm:grid-cols-2 gap-4">
-              {study.tryIt.map((step, index) => (
-                <li
-                  key={step}
-                  className="flex gap-4 bg-neutral-900/80 border border-gray-800 rounded-2xl p-5"
-                >
-                  <span className="w-7 h-7 shrink-0 rounded-full bg-pink-500/10 text-pink-400 text-sm font-medium flex items-center justify-center">
-                    {index + 1}
-                  </span>
-                  <span className="text-gray-200 text-[15px] leading-7">
-                    {step}
-                  </span>
-                </li>
-              ))}
-            </ol>
           </Section>
 
           {/* BUILD */}
